@@ -1,0 +1,31 @@
+name: napari-meshio
+display_name: meshio
+contributions:
+  commands:
+    - id: napari-meshio.get_reader
+      python_name: napari_meshio._reader:napari_get_reader
+      title: Open data with meshio
+    - id: napari-meshio.write_multiple
+      python_name: napari_meshio._writer:write_multiple
+      title: Save multi-layer data with meshio
+    - id: napari-meshio.write_single_image
+      python_name: napari_meshio._writer:write_single_image
+      title: Save image data with meshio
+    - id: napari-meshio.make_sample_data
+      python_name: napari_meshio._sample_data:make_sample_data
+      title: Load sample data from meshio
+  readers:
+    - command: napari-meshio.get_reader
+      accepts_directories: false
+      filename_patterns: ['*.npy']
+  writers:
+    - command: napari-meshio.write_multiple
+      layer_types: ['image*','labels*']
+      filename_extensions: []
+    - command: napari-meshio.write_single_image
+      layer_types: ['image']
+      filename_extensions: ['.npy']
+  sample_data:
+    - command: napari-meshio.make_sample_data
+      display_name: meshio
+      key: unique_id.1
