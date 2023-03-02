@@ -12,10 +12,11 @@ import os
 import tarfile
 
 import meshio
+import numpy as np
 import pooch
 
 
-def bunny():
+def make_sample_data():
     """The Stanford Bunny surface mesh.
 
     Details
@@ -53,13 +54,16 @@ def bunny():
         file.extractall(extract_location)
 
     bunny_filename = os.path.join(
-        extract_location, "reconstruction" + os.sep + "bun_zipper.ply"
+        extract_location,
+        "bunny" + os.sep + "reconstruction" + os.sep + "bun_zipper.ply",
     )
     mesh = meshio.read(bunny_filename)
-    data = (mesh.points, mesh.cells[0].data)
+    vertices = np.fliplr(mesh.points)
+    faces = np.fliplr(mesh.cells[0].data)
+    data = (vertices, faces)
 
     # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
+    add_kwargs = {"name": "bunny"}
 
     layer_type = "surface"
     return [(data, add_kwargs, layer_type)]

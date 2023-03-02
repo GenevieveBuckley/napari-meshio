@@ -8,7 +8,6 @@ https://napari.org/stable/plugins/guides.html?#readers
 import pathlib
 
 import meshio
-import numpy as np
 
 MESHIO_FILE_FORMATS = [
     ".inp",  # Abaqus http://abaqus.software.polimi.it/v6.14/index.html
@@ -67,9 +66,6 @@ def napari_get_reader(path):
         If the path is a recognized format, return a function that accepts the
         same path or list of paths, and returns a list of layer data tuples.
     """
-    import pdb
-
-    pdb.set_trace()
     if isinstance(path, list):
         # reader plugins may be handed single path, or a list of paths.
         # if it is a list, it is assumed to be an image stack...
@@ -80,28 +76,11 @@ def napari_get_reader(path):
         path = pathlib.Path(path)
     suffix = path.suffix
 
-    if suffix in MESHIO_FILE_FORMATS:
-        return reader_function
-    elif suffix in [".xyz"]:
-        return points_reader_function
-    elif suffix in [".npy"]:
-        return single_numpy_reader_function
-    else:
-        # if we know we cannot read the file, return None.
+    if suffix not in MESHIO_FILE_FORMATS:
+        # if we know we cannot read the file, immediately return None.
         return None
 
-
-def points_reader_function(path):
-    if isinstance(path, list):
-        path = path[0]
-    data = np.genfromtxt(path)
-    data = np.fliplr(data)  # switch from xyz to zyx axes order napari expects
-
-    # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
-
-    layer_type = "points"  # optional, default is "image"
-    return [(data, add_kwargs, layer_type)]
+    return reader_function
 
 
 def reader_function(path):
@@ -126,8 +105,6 @@ def reader_function(path):
         layer. Both "meta", and "layer_type" are optional. napari will
         default to layer_type=="image" if not provided
     """
-    # handle both a string and a list of strings
-    # paths = [path] if isinstance(path, str) else path
     mesh = meshio.read(path)
     data = (mesh.points, mesh.cells[0].data)
 
@@ -135,47 +112,4 @@ def reader_function(path):
     add_kwargs = {}
 
     layer_type = "surface"
-    return (data, [add_kwargs, [layer_type]])
-
-
-def numpy_reader_function(path):
-    """Take a path or list of paths and return a list of LayerData tuples.
-    Readers are expected to return data as a list of tuples, where each tuple
-    is (data, [add_kwargs, [layer_type]]), "add_kwargs" and "layer_type" are
-    both optional.
-    Parameters
-    ----------
-    path : str or list of str
-        Path to file, or list of paths.
-    Returns
-    -------
-    layer_data : list of tuples
-        A list of LayerData tuples where each tuple in the list contains
-        (data, metadata, layer_type), where data is a numpy array, metadata is
-        a dict of keyword arguments for the corresponding viewer.add_* method
-        in napari, and layer_type is a lower-case string naming the type of
-        layer. Both "meta", and "layer_type" are optional. napari will
-        default to layer_type=="image" if not provided
-    """
-    # handle both a string and a list of strings
-    paths = [path] if isinstance(path, str) else path
-    # load all files into array
-    arrays = [np.load(_path) for _path in paths]
-    # stack arrays into single array
-    data = np.squeeze(np.stack(arrays))
-
-    # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
-
-    layer_type = "image"  # optional, default is "image"
-    return [(data, add_kwargs, layer_type)]
-
-
-def single_numpy_reader_function(path):
-    print("single_numpy_reader_function")
-    data = np.load(path)
-    # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
-
-    layer_type = "labels"  # optional, default is "image"
     return [(data, add_kwargs, layer_type)]
