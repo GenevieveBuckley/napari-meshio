@@ -2,13 +2,19 @@ import os
 
 import meshio
 import numpy as np
+import pytest
 
 from napari_meshio import napari_get_reader
 
 
-# tmp_path is a pytest fixture
-def test_reader(tmp_path):
-    """Test meshio reader plugin."""
+@pytest.mark.parametrize("suffix", [".ply", ".stl", ".vol", ".vtk"])
+def test_reader(tmp_path, suffix):  # tmp_path is a pytest fixture
+    """Test meshio reader plugin.
+
+    Tests a small subset of meshio available file formats.
+    See more details of available file formats here:
+    https://github.com/nschloe/meshio
+    """
     # Make test mesh data
     points = [[0, 0, 0], [0, 20, 20], [10, 0, 0], [10, 10, 10]]
     cells = [[0, 1, 2], [1, 2, 3]]
@@ -16,7 +22,6 @@ def test_reader(tmp_path):
     mesh = meshio.Mesh(points, face_data)
 
     # Save test mesh data
-    suffix = ".ply"
     my_test_file = os.path.join(tmp_path, "test-mesh" + suffix)
     mesh.write(my_test_file)
 
