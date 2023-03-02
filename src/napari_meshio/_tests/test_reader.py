@@ -1,3 +1,6 @@
+import os
+
+import meshio
 import numpy as np
 
 from napari_meshio import napari_get_reader
@@ -5,12 +8,17 @@ from napari_meshio import napari_get_reader
 
 # tmp_path is a pytest fixture
 def test_reader(tmp_path):
-    """An example of how you might test your plugin."""
+    """Test meshio reader plugin."""
+    # Make test mesh data
+    points = [[0, 0, 0], [0, 20, 20], [10, 0, 0], [10, 10, 10]]
+    cells = [[0, 1, 2], [1, 2, 3]]
+    face_data = [("triangle", cells)]
+    mesh = meshio.Mesh(points, face_data)
 
-    # write some fake data using your supported file format
-    my_test_file = str(tmp_path / "myfile.npy")
-    original_data = np.random.rand(20, 20)
-    np.save(my_test_file, original_data)
+    # Save test mesh data
+    suffix = ".ply"
+    my_test_file = os.path.join(tmp_path, "test-mesh" + suffix)
+    mesh.write(my_test_file)
 
     # try to read it back in
     reader = napari_get_reader(my_test_file)
@@ -23,7 +31,11 @@ def test_reader(tmp_path):
     assert isinstance(layer_data_tuple, tuple) and len(layer_data_tuple) > 0
 
     # make sure it's the same as it started
-    np.testing.assert_allclose(original_data, layer_data_tuple[0])
+    data, kwargs, layer_type = layer_data_tuple
+    assert layer_type == "surface"
+    saved_points, saved_cells = data
+    np.testing.assert_allclose(points, saved_points)
+    np.testing.assert_allclose(cells, saved_cells)
 
 
 def test_get_reader_pass():
