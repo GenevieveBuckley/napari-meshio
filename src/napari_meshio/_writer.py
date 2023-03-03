@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Any, List, Sequence, Tuple, Union
 
 import meshio
 
+from napari_meshio import DEFAULT_MESH_FORMAT, MESHIO_FILE_FORMATS
+
 if TYPE_CHECKING:
     DataType = Union[Any, Sequence[Any]]
     FullLayerData = Tuple[DataType, dict, str]
@@ -20,6 +22,8 @@ if TYPE_CHECKING:
 
 def write_single_surface(path: str, data: Any, meta: dict) -> List[str]:
     """Writes a single surface to mesh file.
+
+    If no file extension is given, default saves meshes to .ply files.
 
     Parameters
     ----------
@@ -31,7 +35,7 @@ def write_single_surface(path: str, data: Any, meta: dict) -> List[str]:
     -------
     [path] : A list containing the string path to the saved file.
     """
-
+    path = Path(path)
     # Create meshio Mesh from napari Surface layer
     points, cells, values = data
     if cells.shape[-1] == 3:
@@ -39,9 +43,20 @@ def write_single_surface(path: str, data: Any, meta: dict) -> List[str]:
     elif cells.shape[-1] == 4:
         face_data = [("quad", cells)]
     else:
-        raise ValueError("")
+        raise ValueError(
+            "napari-meshio only supports triangle or quad face cells in meshes."  # noqa: E501
+        )
     mesh = meshio.Mesh(points, face_data)
     # Write mesh data to file
+    suffix = path.suffix
+    if suffix not in MESHIO_FILE_FORMATS:
+        if suffix == "":
+            path = path.with_suffix(DEFAULT_MESH_FORMAT)
+        else:
+            raise RuntimeError(
+                f"napari-meshio does not suuport file format '{suffix}'."
+                f"Supported file extensions include: {MESHIO_FILE_FORMATS}"
+            )
     mesh.write(path)
     # return path to any file(s) that were successfully written
     return [path]

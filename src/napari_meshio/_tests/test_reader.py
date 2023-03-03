@@ -46,3 +46,11 @@ def test_reader(tmp_path, suffix):  # tmp_path is a pytest fixture
 def test_get_reader_pass():
     reader = napari_get_reader("fake.file")
     assert reader is None
+
+
+def test_get_reader_from_list():
+    path_list = ["test_file_1.ply", "test_file_2.ply"]
+    reader = napari_get_reader(path_list)
+    assert callable(reader)
+    assert reader.__module__ == "napari_meshio._reader"
+    assert reader.__name__ == "reader_function"
