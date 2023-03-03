@@ -8,8 +8,8 @@ contributions:
     - id: napari-meshio.write_multiple
       python_name: napari_meshio._writer:write_multiple
       title: Save multi-layer data with meshio
-    - id: napari-meshio.write_single_image
-      python_name: napari_meshio._writer:write_single_image
+    - id: napari-meshio.write_single_surface
+      python_name: napari_meshio._writer:write_single_surface
       title: Save image data with meshio
     - id: napari-meshio.make_sample_data
       python_name: napari_meshio._sample_data:make_sample_data
@@ -22,7 +22,7 @@ contributions:
     - command: napari-meshio.write_multiple
       layer_types: ['surface*']
       filename_extensions: []
-    - command: napari-meshio.write_single_image
+    - command: napari-meshio.write_single_surface
       layer_types: ['surface']
       filename_extensions: ['*.inp', '*.msh', '*.avs', '*.cgns', '*.xml', '*.e', '*.exo', '*.f3grid', '*.h5m', '*.mdpa', '*.mesh', '*.meshb', '*.med', '*.bdf', '*.fem', '*.nas', '*.vol', '*.vol.gz', '*.msh', '*.obj', '*.off', '*.post', '*.post.gz', '*.dato', '*.dato.gz', '*.ply', '*.stl', '*.dat', '*.node', '*.ele', '*.su2', '*.ugrid', '*.vtk', '*.vtu', '*.wkt', '*.xdmf', '*.xmf']
   sample_data:
