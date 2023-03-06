@@ -11,9 +11,9 @@ contributions:
     - id: napari-meshio.write_single_surface
       python_name: napari_meshio._writer:write_single_surface
       title: Save image data with meshio
-    - id: napari-meshio.make_sample_data
-      python_name: napari_meshio._sample_data:make_sample_data
-      title: Load sample data from meshio
+    - id: napari-meshio.bunny
+      python_name: napari_meshio._sample_data:bunny
+      title: Load sample data from meshio, Stanford bunny mesh data
   readers:
     - command: napari-meshio.get_reader
       accepts_directories: false
@@ -26,6 +26,6 @@ contributions:
       layer_types: ['surface']
       filename_extensions: ['*.inp', '*.msh', '*.avs', '*.cgns', '*.xml', '*.e', '*.exo', '*.f3grid', '*.h5m', '*.mdpa', '*.mesh', '*.meshb', '*.med', '*.bdf', '*.fem', '*.nas', '*.vol', '*.vol.gz', '*.msh', '*.obj', '*.off', '*.post', '*.post.gz', '*.dato', '*.dato.gz', '*.ply', '*.stl', '*.dat', '*.node', '*.ele', '*.su2', '*.ugrid', '*.vtk', '*.vtu', '*.wkt', '*.xdmf', '*.xmf']
   sample_data:
-    - command: napari-meshio.make_sample_data
+    - command: napari-meshio.bunny
       display_name: bunny
       key: bunny

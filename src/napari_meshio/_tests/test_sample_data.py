@@ -1,10 +1,10 @@
-from napari_meshio import make_sample_data
+from napari_meshio import bunny
 
 
 def test_sample_data():
     """Test Stanford Bunny example data."""
-    bunny = make_sample_data()
-    data, kwargs, layer_type = bunny[0]
+    bunny_sample_data = bunny()
+    data, kwargs, layer_type = bunny_sample_data[0]
     assert layer_type == "surface"
     assert kwargs.get("name") == "bunny"
     points, cells = data

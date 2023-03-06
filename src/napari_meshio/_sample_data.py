@@ -16,7 +16,7 @@ import numpy as np
 import pooch
 
 
-def make_sample_data():
+def bunny():
     """The Stanford Bunny surface mesh.
 
     Details
