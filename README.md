@@ -9,6 +9,9 @@
 
 This napari plugin uses [meshio](https://github.com/nschloe/meshio) to read and write mesh files to surfaces in napari.
 
+![Screenshot: Stanford bunny example data in napari](assets/bunny-screenshot.png)
+
+
 > There are various mesh formats available for representing unstructured meshes.
 meshio can read and write all of the following and smoothly converts between them:
 >
@@ -42,9 +45,8 @@ meshio can read and write all of the following and smoothly converts between the
 >> [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) ([TIN](https://en.wikipedia.org/wiki/Triangulated_irregular_network)) (`.wkt`),
 >> [XDMF](https://xdmf.org/index.php/XDMF_Model_and_Format) (`.xdmf`, `.xmf`).
 
-----------------------------------
 
-This [napari] plugin was generated with [Cookiecutter] using [@napari]'s [cookiecutter-napari-plugin] template.
+
 
 <!--
 Don't miss the full getting started guide to set up your new package:
@@ -98,3 +100,7 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
 [PyPI]: https://pypi.org/
+
+----------------------------------
+
+This [napari] plugin was generated with [Cookiecutter] using [@napari]'s [cookiecutter-napari-plugin] template.
