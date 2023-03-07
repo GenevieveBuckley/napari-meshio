@@ -11,6 +11,89 @@ This napari plugin uses [meshio](https://github.com/nschloe/meshio) to read and 
 
 ![Screenshot: Stanford bunny example data in napari](assets/bunny-screenshot.png)
 
+*Image caption: screenshot of the [Stanford bunny](http://graphics.stanford.edu/data/3Dscanrep/) example surface mesh open in napari.*
+
+<!--
+Don't miss the full getting started guide to set up your new package:
+https://github.com/napari/cookiecutter-napari-plugin#getting-started
+
+and review the napari docs for plugin developers:
+https://napari.org/stable/plugins/index.html
+-->
+
+- [Installation](#installation)
+- [How to use napari-meshio](#how-to-use-napari-meshio)
+    - [Read surface data from file](#read-surface-data-from-file)
+    - [Open example surface data](#open-example-surface-data)
+    - [Save surface data](#save-surface-data)
+    - [Supported mesh file formats](#supported-mesh-file-formats)
+- [Contributing](#contributing)
+- [License](#license)
+- [Issues](#issues)
+
+## Installation
+
+You can install `napari-meshio` via [pip]:
+
+    pip install napari-meshio
+
+
+
+To install latest development version :
+
+    pip install git+https://github.com/GenevieveBuckley/napari-meshio.git
+
+
+## How to use napari-meshio
+
+### Read surface data from file
+
+Drag and drop the file onto the napari viewer.
+
+*Note: [Here](https://people.sc.fsu.edu/~jburkardt/data/ply/ply.html) are a number of `.ply` example files you can download to try, like [this airplane](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.ply) (see [image](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.png)).*
+
+### Open example surface data
+
+Launch the napari viewer, then open one of the sample datasets (eg: the [Stanford bunny](http://graphics.stanford.edu/data/3Dscanrep/)) from the file menu:
+
+`File` > `Open Sample` > `napari-meshio` > `bunny`
+
+Or, open sample data from python with:
+
+```python
+import napari
+
+viewer = napari.Viewer(ndisplay=3)
+viewer.open_sample('napari-meshio', 'bunny')
+```
+
+### Save surface data
+
+To save a surface layer, click the layer name to select it, and then choose save from the file menu:
+
+`File` > `Save selected layer(s)`
+
+You can also use keyboard shortcuts to save the selected surface layer:
+- Windows/Linux: `Control` + `S`
+- Mac: `⌘` + `S`
+
+Or, save surface layers from python with:
+```python
+filename = "bunny.stl"
+viewer.layers['bunny'].save(filename)
+```
+*Note: this code example assumes you have the Stanford bunny example dataset loaded.*
+
+A [wide variety of surface mesh file formats are supported](#supported-mesh-file-formats) by
+[meshio](https://github.com/nschloe/meshio).
+If no file extension is provided when saving a surface layer,
+the default is the `.ply` polygon file format.
+
+### Supported mesh file formats
+
+*Note: Only triangular mesh faces are supported by napari.*
+
+The [meshio](https://github.com/nschloe/meshio) library documentation describes the supported file formats:
 
 > There are various mesh formats available for representing unstructured meshes.
 meshio can read and write all of the following and smoothly converts between them:
@@ -44,30 +127,6 @@ meshio can read and write all of the following and smoothly converts between the
 >> [VTU](https://vtk.org/Wiki/VTK_XML_Formats) (`.vtu`),
 >> [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) ([TIN](https://en.wikipedia.org/wiki/Triangulated_irregular_network)) (`.wkt`),
 >> [XDMF](https://xdmf.org/index.php/XDMF_Model_and_Format) (`.xdmf`, `.xmf`).
-
-
-
-
-<!--
-Don't miss the full getting started guide to set up your new package:
-https://github.com/napari/cookiecutter-napari-plugin#getting-started
-
-and review the napari docs for plugin developers:
-https://napari.org/stable/plugins/index.html
--->
-
-## Installation
-
-You can install `napari-meshio` via [pip]:
-
-    pip install napari-meshio
-
-
-
-To install latest development version :
-
-    pip install git+https://github.com/GenevieveBuckley/napari-meshio.git
-
 
 ## Contributing
 
