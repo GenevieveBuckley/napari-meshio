@@ -1,5 +1,5 @@
 name: napari-meshio
-display_name: meshio
+display_name: napari-meshio
 contributions:
   commands:
     - id: napari-meshio.get_reader
