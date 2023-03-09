@@ -23,8 +23,8 @@ https://napari.org/stable/plugins/index.html
 
 - [Installation](#installation)
 - [How to use napari-meshio](#how-to-use-napari-meshio)
-    - [Read surface data from file](#read-surface-data-from-file)
     - [Open example surface data](#open-example-surface-data)
+    - [Read surface data from file](#read-surface-data-from-file)
     - [Save surface data](#save-surface-data)
     - [Supported mesh file formats](#supported-mesh-file-formats)
 - [Contributing](#contributing)
@@ -46,12 +46,6 @@ To install latest development version :
 
 ## How to use napari-meshio
 
-### Read surface data from file
-
-Drag and drop the file onto the napari viewer.
-
-*Note: [Here](https://people.sc.fsu.edu/~jburkardt/data/ply/ply.html) are a number of `.ply` example files you can download to try, like [this airplane](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.ply) (see [image](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.png)).*
-
 ### Open example surface data
 
 Launch the napari viewer, then open one of the sample datasets (eg: the [Stanford bunny](http://graphics.stanford.edu/data/3Dscanrep/)) from the file menu:
@@ -65,6 +59,22 @@ import napari
 
 viewer = napari.Viewer(ndisplay=3)
 viewer.open_sample('napari-meshio', 'bunny')
+```
+
+### Read surface data from file
+
+Drag and drop the file onto the napari viewer.
+
+*Note: [Here](https://people.sc.fsu.edu/~jburkardt/data/ply/ply.html) are a number of `.ply` example files you can download to try, like [this airplane](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.ply) (see [image](https://people.sc.fsu.edu/~jburkardt/data/ply/airplane.png)).*
+
+
+Or, open surface mesh files from python with:
+
+```python
+import napari
+
+viewer = napari.Viewer(ndisplay=3)
+viewer.open("path/to/surface/mesh/file.stl")  # change this to your mesh filename
 ```
 
 ### Save surface data
