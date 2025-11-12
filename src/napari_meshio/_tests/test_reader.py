@@ -3,6 +3,7 @@ import os
 import meshio
 import numpy as np
 import pytest
+import pyvista as pv
 
 from napari_meshio import napari_get_reader
 
@@ -54,3 +55,19 @@ def test_get_reader_from_list():
     assert callable(reader)
     assert reader.__module__ == "napari_meshio._reader"
     assert reader.__name__ == "reader_function"
+
+def test_surface_reader_meshio_error(tmp_path):
+    """Confirm that `surface_reader` returns the correct exceptions when meshio fails to read.
+    
+    Here, we use the fact that meshio does not support reading PolyData in .vtk formats, while
+    pyvista will save PolyData to .vtk format.
+    """
+    bad_file = tmp_path.joinpath("bad_mesh.vtk")
+    # Create a pyvista PolyData object
+    mesh = pv.Sphere()
+    # Save as PolyData in .vtk format
+    mesh.save(bad_file)
+    bad_reader = napari_get_reader(bad_file)
+    assert bad_reader is not None
+    with pytest.raises(RuntimeError):
+        bad_reader(bad_file)
