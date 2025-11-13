@@ -56,18 +56,22 @@ def test_get_reader_from_list():
     assert reader.__module__ == "napari_meshio._reader"
     assert reader.__name__ == "reader_function"
 
-def test_surface_reader_meshio_error(tmp_path):
-    """Confirm that `surface_reader` returns the correct exceptions when meshio fails to read.
-    
+
+def test_meshio_error(tmp_path):
+    """Confirm napari-meshio handles errors gracefully when meshio fails to read.
+
     Here, we use the fact that meshio does not support reading PolyData in .vtk formats, while
     pyvista will save PolyData to .vtk format.
+
+    Reading the bad file in meshio ordinarily produces a SystemExit (crashing napari),
+    but the napari-meshio plugin catches this and shows a RuntimeError instead.
     """
     bad_file = tmp_path.joinpath("bad_mesh.vtk")
     # Create a pyvista PolyData object
     mesh = pv.Sphere()
     # Save as PolyData in .vtk format
     mesh.save(bad_file)
-    bad_reader = napari_get_reader(bad_file)
-    assert bad_reader is not None
+    reader = napari_get_reader(bad_file)
+    assert reader is not None
     with pytest.raises(RuntimeError):
-        bad_reader(bad_file)
+        reader(bad_file)
