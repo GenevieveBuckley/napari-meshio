@@ -65,7 +65,12 @@ def reader_function(path):
         layer. Both "meta", and "layer_type" are optional. napari will
         default to layer_type=="image" if not provided
     """
-    mesh = meshio.read(path)
+    try:
+        mesh = meshio.read(path)
+    except SystemExit as exc:
+        raise RuntimeError(
+            "Surface file is not readable by meshio."
+        ) from exc
     data = (mesh.points, mesh.cells[0].data)
 
     # optional kwargs for the corresponding viewer.add_* method
